@@ -37,7 +37,6 @@ def _convert_set(a: list, cls: typing.Type[__T]) -> typing.Set[__T]:
 
 
 def __get_name(c: Generic):
-    print(sys.version_info[:2])
     if sys.version_info[:2] < (3, 8):
         return c.__origin__.__name__
     else:
