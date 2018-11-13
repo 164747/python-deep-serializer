@@ -15,6 +15,7 @@ try:
 except ImportError:
     from typing import GenericMeta as Generic
 
+__S = typing.TypeVar('__S')
 __T = typing.TypeVar('__T')
 
 
@@ -25,10 +26,10 @@ def _convert_list(a: list, cls: typing.Type[__T]) -> typing.List[__T]:
     return res
 
 
-def _convert_dict(d: dict, cls: typing.Type[__T]) -> typing.Dict[typing.Hashable, __T]:
+def _convert_dict(d: dict, key_cls: typing.Type[__S], cls: typing.Type[__T]) -> typing.Dict[typing.Hashable, __T]:
     res = {}
     for k, v in d.items():
-        res[k] = _DecAux.dict2class(cls, v)
+        res[_DecAux.dict2class(key_cls, k)] = _DecAux.dict2class(cls, v)
     return res
 
 
@@ -51,7 +52,7 @@ def _cnv_generic_alias(c: Generic, el):
     if isinstance(el, (list, tuple)) and tl == 1 and name == 'List':
         return _convert_list(el, args[0])
     elif isinstance(el, dict) and tl == 2 and name == 'Dict':
-        return _convert_dict(el, args[1])
+        return _convert_dict(el, args[0], args[1])
     elif isinstance(el, (list, set, tuple)) and tl == 1 and name == 'Set':
         return _convert_set(el, args[0])
     return el
