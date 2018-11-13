@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='deep_serializer',
-    version='0.0.3',
+    version='0.0.4',
     packages=find_packages(),
     url='https://github.com/164747/python-deep-serializer',
     license=' MIT License',
