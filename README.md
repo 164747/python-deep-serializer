@@ -13,9 +13,10 @@ Package provides for
 
 **Example** 
 ```python
+from pprint import pprint
+
 import datetime
 import typing
-from pprint import pprint
 
 from deep_serializer import des
 from deep_serializer.ser import ToDictEnabled
@@ -33,7 +34,8 @@ class Car(ToDictEnabled):
 
     @des.cast  # casting input
     def __init__(self, model: str, owner: Person, color: str, registration_date: datetime.datetime,
-                 passengers: typing.List[Person] = () ):
+                 passengers: typing.List[Person] = (), miles: typing.Dict[datetime.datetime, float] = None):
+        self.miles = miles
         self.model = model
         self.owner = owner
         self.color = color
@@ -52,7 +54,8 @@ if __name__ == '__main__':
         'model': 'Volvo',
         'owner': {'age': '22', 'name': 'Bob'},
         'passengers': [{'age': 20, 'name': 'Alice'}, {'age': 19, 'name': 'Joe'}],
-        'registration_date': '205-01-02 15:22.01'
+        'registration_date': '2015-01-01 12:00.00',
+        'miles': {'2015-01-01 12:00.00': 0, '2016-01-01 12:00.00': '1000'}
     }
 
     print('\n\nInput')
@@ -77,22 +80,25 @@ Running main yields
 ```
 Input
 {'color': 'blue',
+ 'miles': {'2015-01-01 12:00.00': 0, '2016-01-01 12:00.00': '1000'},
  'model': 'Volvo',
  'owner': {'age': '22', 'name': 'Bob'},
  'passengers': [{'age': 20, 'name': 'Alice'}, {'age': 19, 'name': 'Joe'}],
- 'registration_date': '205-01-02 15:22.01'}
+ 'registration_date': '2015-01-01 12:00.00'}
 
 
 Car object:
-<__main__.Car object at 0x7f018d24ce10>
+<__main__.Car object at 0x7f4972796cf8>
 
 
 Car as dict
 {   'color': 'blue',
+    'miles': {   datetime.datetime(2015, 1, 1, 12, 0): 0.0,
+                 datetime.datetime(2016, 1, 1, 12, 0): 1000.0},
     'model': 'Volvo',
     'owner': {'age': 22, 'name': 'Bob'},
     'passengers': [{'age': 20, 'name': 'Alice'}, {'age': 19, 'name': 'Joe'}],
-    'registration_date': datetime.datetime(205, 1, 2, 15, 22)}
+    'registration_date': datetime.datetime(2015, 1, 1, 12, 0)}
 ```
 
 
