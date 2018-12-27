@@ -1,9 +1,10 @@
 import base64
-import datetime
 import enum
 import json
-import uuid
 from decimal import Decimal
+
+import datetime
+import uuid
 
 
 class JsonEncoder(json.JSONEncoder):
@@ -15,8 +16,11 @@ class JsonEncoder(json.JSONEncoder):
             return '{:f}'.format(o.normalize())
         if isinstance(o, enum.Enum):
             return o.value
-        if isinstance(o, (bytes, bytearray)):
-            return base64.b64encode(o).decode()
         if isinstance(o, (datetime.date, datetime.datetime)):
             return o.isoformat()
+
+        if isinstance(o, memoryview):
+            o = o.tobytes()
+        if isinstance(o, (bytes, bytearray)):
+            return base64.b64encode(o).decode()
         return super().default(o)
