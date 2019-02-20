@@ -85,7 +85,7 @@ class ToDictEnabled(object):
     @property
     def canonical_json(self) -> str:
         try:
-            return json.dumps(self.todict(), cls=JsonEncoder, sort_keys=True, separators=(',', ':'))
+            return json.dumps(self.todict(), cls=JsonEncoder, sort_keys=True, separators=(',', ':'), ensure_ascii=False)
         except BaseException as exc:
             raise SerializeError from exc
 
